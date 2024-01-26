@@ -1,0 +1,6 @@
+@Fannan.API_HostAddress = http://localhost:5201
+
+GET {{Fannan.API_HostAddress}}/api/auth
+Accept: text/plain
+
+###
