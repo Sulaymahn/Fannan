@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Fannan.API.Migrations
 {
     /// <inheritdoc />
-    public partial class initFann : Migration
+    public partial class initFannan : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -119,13 +119,18 @@ namespace Fannan.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
+                    MediaId = table.Column<int>(type: "int", nullable: true),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Image = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Posts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Posts_Medias_MediaId",
+                        column: x => x.MediaId,
+                        principalTable: "Medias",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Posts_Users_UserId",
                         column: x => x.UserId,
@@ -238,6 +243,11 @@ namespace Fannan.API.Migrations
                 column: "ReceiverId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Posts_MediaId",
+                table: "Posts",
+                column: "MediaId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Posts_UserId",
                 table: "Posts",
                 column: "UserId");
@@ -264,9 +274,6 @@ namespace Fannan.API.Migrations
                 name: "Likes");
 
             migrationBuilder.DropTable(
-                name: "Medias");
-
-            migrationBuilder.DropTable(
                 name: "Messages");
 
             migrationBuilder.DropTable(
@@ -274,6 +281,9 @@ namespace Fannan.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "Medias");
 
             migrationBuilder.DropTable(
                 name: "Users");

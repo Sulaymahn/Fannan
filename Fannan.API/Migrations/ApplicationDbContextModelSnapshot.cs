@@ -206,8 +206,8 @@ namespace Fannan.API.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<byte[]>("Image")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<int?>("MediaId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -217,6 +217,8 @@ namespace Fannan.API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MediaId");
 
                     b.HasIndex("UserId");
 
@@ -336,11 +338,17 @@ namespace Fannan.API.Migrations
 
             modelBuilder.Entity("Fannan.API.Entities.Post", b =>
                 {
+                    b.HasOne("Fannan.API.Entities.Media", "Media")
+                        .WithMany()
+                        .HasForeignKey("MediaId");
+
                     b.HasOne("Fannan.API.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Media");
 
                     b.Navigation("User");
                 });
