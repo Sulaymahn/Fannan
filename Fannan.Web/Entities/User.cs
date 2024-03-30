@@ -1,4 +1,4 @@
-﻿namespace Fannan.API.Entities
+﻿namespace Fannan.Web.Entities
 {
     public class User
     {
@@ -9,7 +9,7 @@
         public string Password { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Bio { get; set; } = string.Empty;
-        public string PhoneNumber { get; set; } = string.Empty;
+        public string? PhoneNumber { get; set; }
         public DateTime Joined { get; set; }
         public List<User> Friends { get; set; } = [];
         public List<Message> Messages { get; set; } = [];

@@ -1,4 +1,4 @@
-﻿namespace Fannan.API.Services
+﻿namespace Fannan.Web.Services
 {
     public class UserManager
     {

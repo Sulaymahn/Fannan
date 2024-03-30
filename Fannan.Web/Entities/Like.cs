@@ -1,11 +1,12 @@
-﻿namespace Fannan.API.Entities
+﻿namespace Fannan.Web.Entities
 {
-    public class Comment
+    public class Like
     {
         public int Id { get; set; }
         public int PostId { get; set; }
-        public string Content { get; set; } = string.Empty;
+        //public int UserId { get; set; }
         public DateTime Date { get; set; }
         public Post? Post { get; set; }
+        //public User? User { get; set; }
     }
 }

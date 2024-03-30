@@ -1,4 +1,4 @@
-﻿namespace Fannan.API.Entities
+﻿namespace Fannan.Web.Entities
 {
     public class Media
     {
