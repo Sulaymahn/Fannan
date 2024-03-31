@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Fannan.Web.Data
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opt) : DbContext(opt)
+    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opt, IWebHostEnvironment env) : DbContext(opt)
     {
         public DbSet<User> Users => Set<User>();
         public DbSet<Comment> Comments => Set<Comment>();
@@ -19,6 +19,23 @@ namespace Fannan.Web.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<MusicRole>().HasData(
+                new MusicRole { Id = 1, Name = "Producer" },
+                new MusicRole { Id = 2, Name = "Bassist" },
+                new MusicRole { Id = 3, Name = "Rapper" },
+                new MusicRole { Id = 4, Name = "Singer/Vocalist" },
+                new MusicRole { Id = 5, Name = "Drummer" },
+                new MusicRole { Id = 6, Name = "Audio Engineer" },
+                new MusicRole { Id = 7, Name = "DJ (Disc Jockey)" },
+                new MusicRole { Id = 8, Name = "Backing Vocalist" },
+                new MusicRole { Id = 9, Name = "Conductor" },
+                new MusicRole { Id = 10, Name = "Arranger" },
+                new MusicRole { Id = 11, Name = "Composer" },
+                new MusicRole { Id = 12, Name = "Songwriter" },
+                new MusicRole { Id = 13, Name = "Songwriter" },
+                new MusicRole { Id = 14, Name = "Session Musician" }
+                );
 
             modelBuilder.Entity<Instrument>().HasData(
                 new Instrument { Id = 1, Name = "Guitar" },
@@ -90,6 +107,44 @@ namespace Fannan.Web.Data
                 Password = "Fannan23!",
                 PhoneNumber = ""
             });
+
+            modelBuilder.Entity<Media>().HasData(
+                new Media
+                {
+                    Id = 1,
+                    FileName = "fannan_sf.png",
+                    ContentType = "image/png",
+                    DateAdded = new DateTime(2024, 3, 31),
+                    Data = File.ReadAllBytes(Path.Combine(env.WebRootPath, "images", "fannan_sf.png"))
+                });
+
+            modelBuilder.Entity<Post>().HasData(new Post
+            {
+                Id = 1,
+                UserId = 1,
+                MediaId = 1,
+                Text = "Hello guys, working on the fannan app, almost ready to launchh!!",
+                Date = new DateTime(2024, 3, 31)
+            });
+
+            modelBuilder.Entity<Comment>().HasData(new Comment
+            {
+                Id = 1,
+                UserId = 1,
+                PostId = 1,
+                Content = "Also, the first to comment, see you next time.",
+                Date = new DateTime(2024, 3, 31)
+            });
+
+            modelBuilder.Entity<CommentReply>().HasData(new CommentReply
+            {
+                Id = 1,
+                UserId = 2,
+                CommentId = 1,
+                Content = "Second here!.....",
+                Date = new DateTime(2024, 3, 31)
+            });
+
         }
     }
 }

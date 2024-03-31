@@ -6,9 +6,8 @@ using System.Diagnostics;
 
 namespace Fannan.Web.Controllers
 {
-    public class HomeController(ILogger<HomeController> logger, ApplicationDbContext dbContext) : Controller
+    public class HomeController(ApplicationDbContext dbContext) : Controller
     {
-        private readonly ILogger<HomeController> _logger = logger;
         private readonly ApplicationDbContext _dbContext = dbContext;
 
         public async Task<IActionResult> Index()
