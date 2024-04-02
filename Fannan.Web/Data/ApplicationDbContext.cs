@@ -14,6 +14,7 @@ namespace Fannan.Web.Data
         public DbSet<Media> Medias => Set<Media>();
         public DbSet<Message> Messages => Set<Message>();
         public DbSet<Post> Posts => Set<Post>();
+        public DbSet<Follow> Follows => Set<Follow>();
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -75,9 +76,92 @@ namespace Fannan.Web.Data
                 new Genre { Id = 11, Name = "Punk" }
                 );
 
+
+            modelBuilder.Entity<Media>().HasData(
+                new Media
+                {
+                    Id = 1,
+                    FileName = "post_1.jpg",
+                    ContentType = "image/jpeg",
+                    DateAdded = new DateTime(2024, 3, 31),
+                    Data = File.ReadAllBytes(Path.Combine(env.WebRootPath, "images", "post_1.jpg"))
+                }, new Media
+                {
+                    Id = 2,
+                    FileName = "post_2.jpg",
+                    ContentType = "image/jpeg",
+                    DateAdded = new DateTime(2024, 3, 31),
+                    Data = File.ReadAllBytes(Path.Combine(env.WebRootPath, "images", "post_2.jpg"))
+                }, new Media
+                {
+                    Id = 3,
+                    FileName = "post_3.png",
+                    ContentType = "image/png",
+                    DateAdded = new DateTime(2024, 3, 31),
+                    Data = File.ReadAllBytes(Path.Combine(env.WebRootPath, "images", "post_3.png"))
+                }, new Media
+                {
+                    Id = 4,
+                    FileName = "post_4.jpg",
+                    ContentType = "image/jpeg",
+                    DateAdded = new DateTime(2024, 3, 31),
+                    Data = File.ReadAllBytes(Path.Combine(env.WebRootPath, "images", "post_4.jpg"))
+                }, new Media
+                {
+                    Id = 5,
+                    FileName = "profile_1.jpg",
+                    ContentType = "image/jpeg",
+                    DateAdded = new DateTime(2024, 3, 31),
+                    Data = File.ReadAllBytes(Path.Combine(env.WebRootPath, "images", "profile_1.jpg"))
+                }, new Media
+                {
+                    Id = 6,
+                    FileName = "profile_2.jpg",
+                    ContentType = "image/jpeg",
+                    DateAdded = new DateTime(2024, 3, 31),
+                    Data = File.ReadAllBytes(Path.Combine(env.WebRootPath, "images", "profile_2.jpg"))
+                }, new Media
+                {
+                    Id = 7,
+                    FileName = "profile_3.jpg",
+                    ContentType = "image/jpeg",
+                    DateAdded = new DateTime(2024, 3, 31),
+                    Data = File.ReadAllBytes(Path.Combine(env.WebRootPath, "images", "profile_3.jpg"))
+                });
+
+            modelBuilder.Entity<Post>().HasData(new Post
+            {
+                Id = 1,
+                UserId = 1,
+                MediaId = 1,
+                Text = "Hello guys, working on the fannan app, almost ready to launchh!!",
+                Date = new DateTime(2024, 3, 31)
+            }, new Post
+            {
+                Id = 2,
+                UserId = 1,
+                MediaId = 2,
+                Text = "Just had the most amazing experience at a live concert! 🎶✨ The energy, the passion, the music... it's like being transported to another world. Can't wait for the next one! #LiveMusic #MusicIsLife",
+                Date = new DateTime(2024, 3, 31)
+            }, new Post
+            {
+                Id = 3,
+                UserId = 2,
+                MediaId = 3,
+                Text = "Spent the evening discovering new tunes on Spotify and stumbled upon some absolute gems! Music has this magical way of speaking to the soul, don't you think? 🎧💫 #MusicDiscovery #SoulfulSounds",
+                Date = new DateTime(2024, 3, 31)
+            }, new Post
+            {
+                Id = 4,
+                UserId = 3,
+                Text = "Just jammed with some friends in the garage and it was pure musical therapy. Nothing beats making music together and feeling that creative flow! 🎸🥁 #JamSession #MusicalBonding",
+                Date = new DateTime(2024, 3, 31)
+            });
+
             modelBuilder.Entity<User>().HasData(new User
             {
                 Id = 1,
+                ProfilePictureId = 6,
                 Email = "sulmuk28@gmail.com",
                 FirstName = "Sulaiman",
                 LastName = "Mukhtar",
@@ -90,6 +174,7 @@ namespace Fannan.Web.Data
             new User
             {
                 Id = 2,
+                ProfilePictureId = 5,
                 Email = "yerrouihel@gmail.com",
                 FirstName = "Yassir",
                 Username = "Yassir",
@@ -100,31 +185,13 @@ namespace Fannan.Web.Data
             new User
             {
                 Id = 3,
+                ProfilePictureId = 7,
                 Email = "medoxal123@gmail.com",
                 FirstName = "Ahmad",
                 Username = "Ahmad",
                 Joined = new DateTime(2024, 3, 30),
                 Password = "Fannan23!",
                 PhoneNumber = ""
-            });
-
-            modelBuilder.Entity<Media>().HasData(
-                new Media
-                {
-                    Id = 1,
-                    FileName = "fannan_sf.png",
-                    ContentType = "image/png",
-                    DateAdded = new DateTime(2024, 3, 31),
-                    Data = File.ReadAllBytes(Path.Combine(env.WebRootPath, "images", "fannan_sf.png"))
-                });
-
-            modelBuilder.Entity<Post>().HasData(new Post
-            {
-                Id = 1,
-                UserId = 1,
-                MediaId = 1,
-                Text = "Hello guys, working on the fannan app, almost ready to launchh!!",
-                Date = new DateTime(2024, 3, 31)
             });
 
             modelBuilder.Entity<Comment>().HasData(new Comment
@@ -145,6 +212,10 @@ namespace Fannan.Web.Data
                 Date = new DateTime(2024, 3, 31)
             });
 
+            modelBuilder.Entity<Follow>().HasData(
+                new Follow { UserId = 1, FollowingUserId = 2 },
+                new Follow { UserId = 2, FollowingUserId = 1 }
+                );
         }
     }
 }

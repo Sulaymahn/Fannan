@@ -11,8 +11,10 @@
         public string Bio { get; set; } = string.Empty;
         public string Gender { get; set; } = string.Empty;
         public string? PhoneNumber { get; set; }
+        public int? ProfilePictureId { get; set; }
         public DateTime DateOfBirth { get; set; }
         public DateTime Joined { get; set; }
+        public Media? ProfilePicture { get; set; }
         public List<User> Friends { get; set; } = [];
         public List<MusicRole> MusicRoles { get; set; } = [];
         public List<Message> Messages { get; set; } = [];
