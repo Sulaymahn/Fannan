@@ -1,0 +1,43 @@
+﻿@using Humanizer
+@model FriendMessagingModel
+
+<div class="list-group">
+    @foreach (var message in Model.Messages)
+    {
+        <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+            @if (message.SenderId == ViewBag.UserId)
+            {
+                <div class="d-flex w-100 justify-content-between">
+                    <i class="mb-1"></i>
+                    <small>@message.Date.Humanize()</small>
+                </div>
+                <p class="mb-1">@message.Content</p>
+            }
+            else
+            {
+                <div class="d-flex w-100 justify-content-between">
+                    <i class="mb-1"></i>
+                    <small>@message.Date.Humanize()</small>
+                </div>
+                <p class="mb-1 text-end">@message.Content</p>
+            }
+        </a>
+    }
+</div>
+
+@if (ViewBag.Friend != null)
+{
+    <form action="/Friends/@ViewBag.Friend" method="post" class="form py-4">
+        <input type="text" class="form-control" placeholder="Enter text here.." name="message" min="1"/>
+    </form>
+}
+
+@section sidebar {
+    <p class="h3">Friends</p>
+    <div class="list-group">
+        @foreach (var friend in Model.Friends)
+        {
+            <a href="/Friends/@friend.Username" class="list-group-item list-group-item-action @(ViewBag.Friend == friend.Username ? "active" : "")">@friend.Username</a>
+        }
+    </div>
+}

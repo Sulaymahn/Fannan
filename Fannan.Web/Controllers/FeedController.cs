@@ -24,18 +24,18 @@ namespace Fannan.Web.Controllers
             }
 
             ViewBag.Username = user.Username;
-            ViewBag.CurrentUrl = Request.Path;
+            ViewBag.CurrentUrl = "/Feed";
             ViewBag.ProfilePicture = user.ProfilePictureId;
 
             var followers = await _dbContext.Follows
                 .AsNoTracking()
-                .Where(f => f.UserId == user.Id)
+                .Where(f => f.FollowedId == user.Id)
                 .Select(f => f.FollowingUserId)
                 .ToListAsync();
 
             var posts = await _dbContext.Posts
                 .AsNoTracking()
-                .Where(p => followers.Contains(p.UserId))
+                .Where(p => followers.Contains(p.UserId) || p.UserId == user.Id)
                 .Include(p => p.Likes)
                 .Include(p => p.Media)
                 .Include(p => p.User)

@@ -2,119 +2,55 @@
 @using Humanizer
 @model List<Post>
 @{
-    Layout = null;
-    string navHeight = "64px";
+    Layout = "_FeedLayout";
 }
 
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Feed - Fannan.Web</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Fannan.Web.styles.css" asp-append-version="true" />
-</head>
-<body style="margin: 0px; width: 100vw; height: 100vh;">
-    <nav class="row" style="height: @navHeight; margin: 0px;">
-        <img src="/images/fanna_logo.png" style="height: 32px; width: auto; margin: auto;">
-    </nav>
-    <div class="container">
-        <section class="row" style="margin: 0px; height: calc(100vh - @navHeight);">
-            <div class="col">
-                <div class="d-flex flex-column flex-shrink-0 p-3">
-                    <ul class="nav nav-pills flex-column mb-auto">
-                        <li class="nav-item my-2">
-                            <a href="#" class="nav-link @(ViewBag.CurrentUrl == "/Feed" ? "active" : "")" aria-current="page">
-                                <i class="fa-solid fa-home me-2" width="16" height="16"><use xlink:href="#home" /></i>
-                                Home
-                            </a>
-                        </li>
-                        <li class="nav-item my-2">
-                            <a href="#" class="nav-link text-white @(ViewBag.CurrentUrl == "/Friends" ? "active" : "")">
-                                <i class="fa-solid fa-user-group me-2" width="16" height="16"><use xlink:href="#speedometer2" /></i>
-                                Friends
-                            </a>
-                        </li>
-                        <li class="nav-item my-2">
-                            <a href="#" class="nav-link text-white @(ViewBag.CurrentUrl == "/Discover" ? "active" : "")">
-                                <i class="fa-solid fa-magnifying-glass me-2" width="16" height="16"><use xlink:href="#table" /></i>
-                                Discover
-                            </a>
-                        </li>
-                    </ul>
-                    <hr>
-                    <div class="dropdown">
-                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="/api/medias/@ViewBag.ProfilePicture" alt="" width="32" height="32" class="rounded-circle me-2">
-                            <strong>@ViewBag.Username</strong>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/auth/logout">Sign out</a></li>
-                        </ul>
-                    </div>
-                </div>
+<div class="my-3">
+    <form method="post" action="/feed" enctype="multipart/form-data" class="form">
+        <textarea class="form-control mb-2" name="text" placeholder="What's on your mind?" required></textarea>
+        <div class="d-flex">
+            <input type="file" class="form-control" name="media" accept="image/png, image/jpeg">
+            <input type="submit" class="form-control" style="width: auto; margin-left: 20px;" />
+        </div>
+    </form>
+</div>
+<hr />
+@foreach (var post in Model)
+{
+    <div class="my-3 bg-gradient" style="padding: 20px;">
+        <div class="row">
+            <a class="col fw-bold m-0" href="/Profile/@post.User?.Username">@post.User?.Username</a>
+            <p class="col text-end">@post.Date.Humanize()</p>
+        </div>
+        @if (!string.IsNullOrEmpty(post.Text))
+        {
+            <div class="row">
+                <p class="col">@post.Text</p>
             </div>
-            <main class="col-6 overflow-auto">
-                <div class="my-3">
-                    <form method="post" action="/feed" enctype="multipart/form-data" class="form">
-                        <textarea class="form-control mb-2" name="text" placeholder="What's on your mind?"></textarea>
-                        <label class="form-control">
-                            <input type="file" style="display: none;" name="media" accept="image/png, image/jpeg">
-                            <i class="fa-solid fa-image mx-2"></i>Photo
-                        </label>
-                    </form>
-                </div>
-                <hr />
-                @foreach (var post in Model)
-                {
-                    <div class="my-3 bg-gradient" style="padding: 20px;">
-                        <div class="row">
-                            <p class="col fw-bold m-0">@post.User?.Username</p>
-                            <p class="col text-end">@post.Date.Humanize()</p>
-                        </div>
-                        @if (!string.IsNullOrEmpty(post.Text))
-                        {
-                            <div class="row">
-                                <p class="col">@post.Text</p>
-                            </div>
-                        }
+        }
 
-                        @if (post.Media != null)
-                        {
-                            <img src="@($"api/medias/{post.MediaId}")" style="width: 100%;" />
-                        }
+        @if (post.Media != null)
+        {
+            <img src="@($"api/medias/{post.MediaId}")" style="width: 100%;" />
+        }
 
-                        <div class="row mt-3 d-flex">
-                            <p class="col"><i class="fa-solid fa-heart"></i> @post.Likes.Count</p>
-                            <p class="col"><i class="fa-solid fa-comment"></i> @(post.Comments.Count + post.Comments.SelectMany(c => c.Replies).Count())</p>
-                        </div>
-                        <form method="get" class="form">
-                            <input type="text" name="comment" class="form-control" placeholder="Write your comment" />
-                        </form>
-                        <hr />
-                        @{
-                            var fCom = post.Comments.FirstOrDefault();
-                        }
-                        @if (fCom != null)
-                        {
-                            <div>
-                                <p class="fw-bold m-0">@fCom.User.FirstName</p>
-                                <p>@fCom.Content</p>
-                            </div>
-                        }
-                    </div>
-                }
-            </main>
-            <div class="col">
+        <div class="row mt-3 d-flex">
+            <p class="col"><i class="fa-solid fa-heart"></i> @post.Likes.Count</p>
+            <p class="col"><i class="fa-solid fa-comment"></i> @(post.Comments.Count + post.Comments.SelectMany(c => c.Replies).Count())</p>
+        </div>
+        <form method="get" class="form">
+            <input type="text" name="comment" class="form-control" placeholder="Write your comment" />
+        </form>
+        <hr />
+        @{
+            var fCom = post.Comments.FirstOrDefault();
+        }
+        @if (fCom != null)
+        {
+            <div>
+                <p class="fw-bold m-0">@fCom.User.FirstName</p>
+                <p>@fCom.Content</p>
             </div>
-        </section>
+        }
     </div>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/8d710ea6d3.js" crossorigin="anonymous"></script>
-</body>
-</html>
+}

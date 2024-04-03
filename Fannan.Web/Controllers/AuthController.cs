@@ -80,7 +80,7 @@ namespace Fannan.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                if (await dbContext.Users.AnyAsync(u => u.Email == signup.Email))
+                if (await dbContext.Users.AnyAsync(u => u.Email == signup.Email || u.Username == signup.Username))
                 {
                     ViewBag.Message = "User already exists";
                     return View(signup);

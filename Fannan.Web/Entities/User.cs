@@ -17,7 +17,6 @@
         public Media? ProfilePicture { get; set; }
         public List<User> Friends { get; set; } = [];
         public List<MusicRole> MusicRoles { get; set; } = [];
-        public List<Message> Messages { get; set; } = [];
         public List<Instrument> Instruments { get; set; } = [];
         public List<Genre> Genres { get; set; } = [];
         public List<Like> Likes { get; set; } = [];

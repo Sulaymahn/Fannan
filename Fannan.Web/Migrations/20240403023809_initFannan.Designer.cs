@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fannan.Web.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240402012714_initFannan")]
+    [Migration("20240403023809_initFannan")]
     partial class initFannan
     {
         /// <inheritdoc />
@@ -107,13 +107,13 @@ namespace Fannan.Web.Migrations
 
             modelBuilder.Entity("Fannan.Web.Entities.Follow", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("FollowedId")
                         .HasColumnType("int");
 
                     b.Property<int>("FollowingUserId")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId", "FollowingUserId");
+                    b.HasKey("FollowedId", "FollowingUserId");
 
                     b.HasIndex("FollowingUserId");
 
@@ -122,12 +122,12 @@ namespace Fannan.Web.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = 1,
+                            FollowedId = 1,
                             FollowingUserId = 2
                         },
                         new
                         {
-                            UserId = 2,
+                            FollowedId = 2,
                             FollowingUserId = 1
                         });
                 });
@@ -460,9 +460,14 @@ namespace Fannan.Web.Migrations
                     b.Property<int>("ReceiverId")
                         .HasColumnType("int");
 
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
                 });
@@ -811,21 +816,21 @@ namespace Fannan.Web.Migrations
 
             modelBuilder.Entity("Fannan.Web.Entities.Follow", b =>
                 {
+                    b.HasOne("Fannan.Web.Entities.User", "Followed")
+                        .WithMany()
+                        .HasForeignKey("FollowedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Fannan.Web.Entities.User", "FollowingUser")
                         .WithMany()
                         .HasForeignKey("FollowingUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Fannan.Web.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Followed");
 
                     b.Navigation("FollowingUser");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Fannan.Web.Entities.Like", b =>
@@ -846,12 +851,20 @@ namespace Fannan.Web.Migrations
             modelBuilder.Entity("Fannan.Web.Entities.Message", b =>
                 {
                     b.HasOne("Fannan.Web.Entities.User", "Receiver")
-                        .WithMany("Messages")
+                        .WithMany()
                         .HasForeignKey("ReceiverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Fannan.Web.Entities.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Fannan.Web.Entities.Post", b =>
@@ -950,8 +963,6 @@ namespace Fannan.Web.Migrations
                     b.Navigation("Friends");
 
                     b.Navigation("Likes");
-
-                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }

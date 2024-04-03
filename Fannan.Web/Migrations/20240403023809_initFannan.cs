@@ -128,21 +128,21 @@ namespace Fannan.Web.Migrations
                 name: "Follows",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    FollowedId = table.Column<int>(type: "int", nullable: false),
                     FollowingUserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Follows", x => new { x.UserId, x.FollowingUserId });
+                    table.PrimaryKey("PK_Follows", x => new { x.FollowedId, x.FollowingUserId });
                     table.ForeignKey(
-                        name: "FK_Follows_Users_FollowingUserId",
-                        column: x => x.FollowingUserId,
+                        name: "FK_Follows_Users_FollowedId",
+                        column: x => x.FollowedId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Follows_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Follows_Users_FollowingUserId",
+                        column: x => x.FollowingUserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -205,6 +205,7 @@ namespace Fannan.Web.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    SenderId = table.Column<int>(type: "int", nullable: false),
                     ReceiverId = table.Column<int>(type: "int", nullable: false),
                     Content = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -216,6 +217,12 @@ namespace Fannan.Web.Migrations
                     table.ForeignKey(
                         name: "FK_Messages_Users_ReceiverId",
                         column: x => x.ReceiverId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Messages_Users_SenderId",
+                        column: x => x.SenderId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -456,11 +463,11 @@ namespace Fannan.Web.Migrations
 
             migrationBuilder.InsertData(
                 table: "Follows",
-                columns: new[] { "FollowingUserId", "UserId" },
+                columns: new[] { "FollowedId", "FollowingUserId" },
                 values: new object[,]
                 {
-                    { 2, 1 },
-                    { 1, 2 }
+                    { 1, 2 },
+                    { 2, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -533,6 +540,11 @@ namespace Fannan.Web.Migrations
                 name: "IX_Messages_ReceiverId",
                 table: "Messages",
                 column: "ReceiverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_SenderId",
+                table: "Messages",
+                column: "SenderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MusicRoleUser_UsersId",

@@ -213,8 +213,8 @@ namespace Fannan.Web.Data
             });
 
             modelBuilder.Entity<Follow>().HasData(
-                new Follow { UserId = 1, FollowingUserId = 2 },
-                new Follow { UserId = 2, FollowingUserId = 1 }
+                new Follow { FollowedId = 1, FollowingUserId = 2 },
+                new Follow { FollowedId = 2, FollowingUserId = 1 }
                 );
         }
     }
