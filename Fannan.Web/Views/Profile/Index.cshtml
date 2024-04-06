@@ -1,34 +1,35 @@
-﻿@model Fannan.Web.Entities.User
+﻿@using Humanizer
+@model ProfileModel
 
 <p class="fw-bold h4">Profile</p>
-@if (Model.Username == ViewBag.Username)
+@if (Model.User.Username == ViewBag.Username)
 {
     <form action="/Profile" method="post" class="form">
         <div class="row mb-3">
             <div class="input-group col">
-                <label asp-for="FirstName" class="input-group-text">First name</label>
-                <input type="text" class="form-control" asp-for="FirstName">
+                <label asp-for="User.FirstName" class="input-group-text">First name</label>
+                <input type="text" class="form-control" asp-for="User.FirstName">
             </div>
             <div class="input-group col">
-                <label asp-for="LastName" class="input-group-text">Last name</label>
-                <input type="text" class="form-control" asp-for="LastName">
+                <label asp-for="User.LastName" class="input-group-text">Last name</label>
+                <input type="text" class="form-control" asp-for="User.LastName">
             </div>
         </div>
         <div class="input-group mb-3">
-            <label asp-for="DateOfBirth" class="input-group-text">Birthday</label>
-            <input type="date" class="form-control" asp-for="DateOfBirth">
+            <label asp-for="User.DateOfBirth" class="input-group-text">Birthday</label>
+            <input type="date" class="form-control" asp-for="User.DateOfBirth">
         </div>
         <div class="input-group mb-3">
-            <label asp-for="PhoneNumber" class="input-group-text">Phone</label>
-            <input type="text" class="form-control" asp-for="PhoneNumber">
+            <label asp-for="User.PhoneNumber" class="input-group-text">Phone</label>
+            <input type="text" class="form-control" asp-for="User.PhoneNumber">
         </div>
         <div class="input-group mb-3">
-            <label asp-for="Gender" class="input-group-text">Gender</label>
-            <input type="text" class="form-control" asp-for="Gender">
+            <label asp-for="User.Gender" class="input-group-text">Gender</label>
+            <input type="text" class="form-control" asp-for="User.Gender">
         </div>
         <div class="input-group mb-3">
-            <label asp-for="Bio" class="input-group-text">Bio</label>
-            <textarea asp-for="Bio" class="form-control"></textarea>
+            <label asp-for="User.Bio" class="input-group-text">Bio</label>
+            <textarea asp-for="User.Bio" class="form-control"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Save changes</button>
     </form>
@@ -38,35 +39,66 @@ else
     <div class="row mb-3">
         <div class="input-group col">
             <label class="input-group-text">First name</label>
-            <input type="text" class="form-control" asp-for="FirstName" readonly>
+            <input type="text" class="form-control" asp-for="User.FirstName" readonly>
         </div>
         <div class="input-group col">
-            <label asp-for="LastName" class="input-group-text">Last name</label>
-            <input type="text" class="form-control" asp-for="LastName" readonly>
+            <label asp-for="User.LastName" class="input-group-text">Last name</label>
+            <input type="text" class="form-control" asp-for="User.LastName" readonly>
         </div>
     </div>
     <div class="input-group mb-3">
-        <label asp-for="DateOfBirth" class="input-group-text">Birthday</label>
-        <input type="date" class="form-control" asp-for="DateOfBirth" readonly>
+        <label asp-for="User.DateOfBirth" class="input-group-text">Birthday</label>
+        <input type="date" class="form-control" asp-for="User.DateOfBirth" readonly>
     </div>
     <div class="input-group mb-3">
-        <label asp-for="PhoneNumber" class="input-group-text">Phone</label>
-        <input type="text" class="form-control" asp-for="PhoneNumber" readonly>
+        <label asp-for="User.PhoneNumber" class="input-group-text">Phone</label>
+        <input type="text" class="form-control" asp-for="User.PhoneNumber" readonly>
     </div>
     <div class="input-group mb-3">
-        <label asp-for="Gender" class="input-group-text">Gender</label>
-        <input type="text" class="form-control" asp-for="Gender" readonly>
+        <label asp-for="User.Gender" class="input-group-text">Gender</label>
+        <input type="text" class="form-control" asp-for="User.Gender" readonly>
     </div>
     <div class="input-group mb-3">
-        <label asp-for="Bio" class="input-group-text">Bio</label>
-        <textarea asp-for="Bio" class="form-control" readonly></textarea>
+        <label asp-for="User.Bio" class="input-group-text">Bio</label>
+        <textarea asp-for="User.Bio" class="form-control" readonly></textarea>
     </div>
 }
 
-@section sidebar{
-    <img src="/api/medias/@Model.ProfilePictureId" style="width: auto; height: 100px;" class="rounded-circle mb-3" />
-    <p class="fw-bold m-0">@Model.Username</p>
-    <p class="mb-2">@Model.Email</p>
+<p class="fw-bold h4 mt-3">Posts</p>
+@foreach (var post in Model.Posts)
+{
+    <div class="my-3 bg-gradient" style="padding: 20px;">
+        <div class="row">
+            <p class="col fw-bold m-0">@post.User?.Username</p>
+            <p class="col text-end">@post.Date.Humanize()</p>
+        </div>
+        @if (!string.IsNullOrEmpty(post.Text))
+        {
+            <div class="row">
+                <p class="col">@post.Text</p>
+            </div>
+        }
+
+        @if (post.Media != null)
+        {
+            <img src="@($"api/medias/{post.MediaId}")" style="width: 100%;" />
+        }
+
+        <div class="row mt-3 d-flex">
+            <p class="col"><i class="fa-solid fa-heart"></i> @post.Likes.Count</p>
+            <p class="col"><i class="fa-solid fa-comment"></i> @(post.Comments.Count + post.Comments.SelectMany(c => c.Replies).Count())</p>
+        </div>
+    </div>
+}
+
+@section sidebar {
+    <img src="/api/medias/@Model.User.ProfilePictureId" style="width: auto; height: 100px;" class="rounded-circle mb-3" />
+    @if (Model.User.Username != ViewBag.Username && Model.CanFollow)
+    {
+        <a class="fw-bold m-0" href="/Friends/Follow/@(Model.User.Username)?returnUrl=/Profile/@(Model.User.Username)">Follow</a>
+    }
+    <p class="fw-bold m-0">@Model.User.Username</p>
+    <p class="mb-2">@Model.User.Email</p>
     <p class="fw-bold m-0">Bio</p>
-    <p class="m-0">@Model.Bio</p>
+    <p class="m-0">@Model.User.Bio</p>
 }

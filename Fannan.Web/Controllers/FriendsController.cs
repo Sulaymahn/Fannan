@@ -89,5 +89,37 @@ namespace Fannan.Web.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet("Friends/Follow/{username}")]
+        public async Task<IActionResult> Follow([FromRoute] string username, [FromQuery] string returnUrl = "/Feed")
+        {
+            var currentUser = await _dbContext.Users
+                    .Where(u => u.Id == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value))
+                    .FirstAsync();
+
+            var toFollow = await _dbContext.Users
+                .Where(u => u.Username == username)
+                .FirstOrDefaultAsync();
+
+            if (toFollow != null)
+            {
+                var friends = await _dbContext.Follows
+                .Where(f => f.FollowedId == currentUser.Id)
+                .Select(f => f.FollowingUser!)
+                .ToListAsync();
+
+                if (!friends.Any(u => u.Id == toFollow.Id))
+                {
+                    await _dbContext.Follows.AddRangeAsync(new Follow
+                    {
+                        FollowedId = currentUser.Id,
+                        FollowingUserId = toFollow.Id
+                    });
+                    await _dbContext.SaveChangesAsync();
+                }
+            }
+
+            return LocalRedirect(returnUrl);
+        }
     }
 }

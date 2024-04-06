@@ -90,5 +90,30 @@ namespace Fannan.Web.Controllers
             await _dbContext.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        [HttpGet("Post/{postId:int}/Like")]
+        public async Task<IActionResult> Like([FromRoute] int postId)
+        {
+            var post = await _dbContext.Posts
+                .FirstOrDefaultAsync(p => p.Id == postId);
+
+            if(post == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            User user = await _dbContext.Users.FirstAsync(u => u.Id == int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value));
+
+            await _dbContext.Likes.AddAsync(new Like
+            {
+                PostId = postId,
+                UserId = user.Id,
+                Date = DateTime.UtcNow,
+            });
+
+            await _dbContext.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

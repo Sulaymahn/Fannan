@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Fannan.Web.Data
 {
-    public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> opt, IWebHostEnvironment env) : DbContext(opt)
+    public class ApplicationDbContext(IWebHostEnvironment environment, IConfiguration configuration) : DbContext
     {
         public DbSet<User> Users => Set<User>();
         public DbSet<Comment> Comments => Set<Comment>();
@@ -16,6 +16,12 @@ namespace Fannan.Web.Data
         public DbSet<Post> Posts => Set<Post>();
         public DbSet<Follow> Follows => Set<Follow>();
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+            var connectionString = configuration.GetConnectionString("MySql");
+            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -84,49 +90,49 @@ namespace Fannan.Web.Data
                     FileName = "post_1.jpg",
                     ContentType = "image/jpeg",
                     DateAdded = new DateTime(2024, 3, 31),
-                    Data = File.ReadAllBytes(Path.Combine(env.WebRootPath, "images", "post_1.jpg"))
+                    Data = File.ReadAllBytes(Path.Combine(environment.WebRootPath, "images", "post_1.jpg"))
                 }, new Media
                 {
                     Id = 2,
                     FileName = "post_2.jpg",
                     ContentType = "image/jpeg",
                     DateAdded = new DateTime(2024, 3, 31),
-                    Data = File.ReadAllBytes(Path.Combine(env.WebRootPath, "images", "post_2.jpg"))
+                    Data = File.ReadAllBytes(Path.Combine(environment.WebRootPath, "images", "post_2.jpg"))
                 }, new Media
                 {
                     Id = 3,
                     FileName = "post_3.png",
                     ContentType = "image/png",
                     DateAdded = new DateTime(2024, 3, 31),
-                    Data = File.ReadAllBytes(Path.Combine(env.WebRootPath, "images", "post_3.png"))
+                    Data = File.ReadAllBytes(Path.Combine(environment.WebRootPath, "images", "post_3.png"))
                 }, new Media
                 {
                     Id = 4,
                     FileName = "post_4.jpg",
                     ContentType = "image/jpeg",
                     DateAdded = new DateTime(2024, 3, 31),
-                    Data = File.ReadAllBytes(Path.Combine(env.WebRootPath, "images", "post_4.jpg"))
+                    Data = File.ReadAllBytes(Path.Combine(environment.WebRootPath, "images", "post_4.jpg"))
                 }, new Media
                 {
                     Id = 5,
                     FileName = "profile_1.jpg",
                     ContentType = "image/jpeg",
                     DateAdded = new DateTime(2024, 3, 31),
-                    Data = File.ReadAllBytes(Path.Combine(env.WebRootPath, "images", "profile_1.jpg"))
+                    Data = File.ReadAllBytes(Path.Combine(environment.WebRootPath, "images", "profile_1.jpg"))
                 }, new Media
                 {
                     Id = 6,
                     FileName = "profile_2.jpg",
                     ContentType = "image/jpeg",
                     DateAdded = new DateTime(2024, 3, 31),
-                    Data = File.ReadAllBytes(Path.Combine(env.WebRootPath, "images", "profile_2.jpg"))
+                    Data = File.ReadAllBytes(Path.Combine(environment.WebRootPath, "images", "profile_2.jpg"))
                 }, new Media
                 {
                     Id = 7,
                     FileName = "profile_3.jpg",
                     ContentType = "image/jpeg",
                     DateAdded = new DateTime(2024, 3, 31),
-                    Data = File.ReadAllBytes(Path.Combine(env.WebRootPath, "images", "profile_3.jpg"))
+                    Data = File.ReadAllBytes(Path.Combine(environment.WebRootPath, "images", "profile_3.jpg"))
                 });
 
             modelBuilder.Entity<Post>().HasData(new Post

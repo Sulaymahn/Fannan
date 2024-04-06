@@ -17,7 +17,7 @@
 <hr />
 @foreach (var post in Model)
 {
-    <div class="my-3 bg-gradient" style="padding: 20px;">
+    <div class="my-3 bg-gradient" style="padding: 20px;" id="@post.Id">
         <div class="row">
             <a class="col fw-bold m-0" href="/Profile/@post.User?.Username">@post.User?.Username</a>
             <p class="col text-end">@post.Date.Humanize()</p>
@@ -35,7 +35,7 @@
         }
 
         <div class="row mt-3 d-flex">
-            <p class="col"><i class="fa-solid fa-heart"></i> @post.Likes.Count</p>
+            <a class="col" href="Post/@post.Id/Like#@post.Id"><i class="fa-solid fa-heart text-danger"></i> @post.Likes.Count</a>
             <p class="col"><i class="fa-solid fa-comment"></i> @(post.Comments.Count + post.Comments.SelectMany(c => c.Replies).Count())</p>
         </div>
         <form method="get" class="form">

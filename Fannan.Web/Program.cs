@@ -1,23 +1,16 @@
 using Fannan.Web.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
+builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(opt =>
     {
         opt.LoginPath = "/auth/login";
         opt.LogoutPath = "/auth/logout";
     });
-builder.Services.AddDbContext<ApplicationDbContext>(opt =>
-{
-    string connstring = builder.Configuration.GetConnectionString("Local")!;
-    opt.UseMySql(connstring, ServerVersion.AutoDetect(connstring));
-});
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

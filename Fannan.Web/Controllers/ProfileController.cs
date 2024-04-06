@@ -20,6 +20,7 @@ namespace Fannan.Web.Controllers
             ViewBag.Username = currentUser.Username;
             ViewBag.ProfilePicture = currentUser.ProfilePictureId;
             ViewBag.CurrentUrl = "/Profile";
+            ViewBag.CanFollow = true;
 
             if (username == null)
             {
@@ -33,8 +34,20 @@ namespace Fannan.Web.Controllers
                 return LocalRedirect("/feed");
             }
 
+            var followers = await _dbContext.Follows
+                .Where(f => f.FollowedId == currentUser.Id)
+                .ToListAsync();
 
-            return View(user);
+            return View(new ProfileModel
+            {
+                CanFollow = !followers.Any(f => f.FollowingUserId == user.Id),
+                User = user,
+                Posts = await _dbContext.Posts
+                .Where(p => p.UserId == user.Id)
+                .Include(u => u.Likes)
+                .Include(u => u.Comments)
+                .ToListAsync()
+            });
         }
 
         [HttpPost("Profile")]

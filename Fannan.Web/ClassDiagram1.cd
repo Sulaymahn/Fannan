@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Fannan.Web.Entities.Comment">
+    <Position X="2.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAgAAAAEAAAAAAAgACAAAAAABAAAAAAAIAAA=</HashCode>
+      <FileName>Entities\Comment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fannan.Web.Entities.CommentReply">
+    <Position X="4.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAEAgAAAAAAAAAAAAgAAAAAAAAhAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\CommentReply.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fannan.Web.Entities.Follow">
+    <Position X="6.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgEAAgAAAAAAgAAA=</HashCode>
+      <FileName>Entities\Follow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fannan.Web.Entities.Genre">
+    <Position X="8" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACACAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Genre.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fannan.Web.Entities.Instrument">
+    <Position X="9.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACACAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Instrument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fannan.Web.Entities.Like">
+    <Position X="2.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAEAAAAAAAAACAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Like.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fannan.Web.Entities.Media">
+    <Position X="9.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAABAAAQAQAABAAAA=</HashCode>
+      <FileName>Entities\Media.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fannan.Web.Entities.Message">
+    <Position X="8" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAgAAAAAAAAAAAAAAAAAFAAABAAAABAAIAAA=</HashCode>
+      <FileName>Entities\Message.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fannan.Web.Entities.MusicRole">
+    <Position X="2.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACACAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\MusicRole.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fannan.Web.Entities.Post">
+    <Position X="4.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAAAAAAAAAAAAAAAAgAAAAAAEADAAAACAAAIAQ=</HashCode>
+      <FileName>Entities\Post.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fannan.Web.Entities.User">
+    <Position X="6.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEAABCAEABCACRIAQAAAEAAQAAACBAAAAAABIAg=</HashCode>
+      <FileName>Entities\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
